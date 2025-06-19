@@ -19,9 +19,17 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 
 # from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from books_service.views import BookViewSet
+from borrowing.views import BorrowingViewSet
+
+router = DefaultRouter()
+router.register("borrowing", BorrowingViewSet, basename="borrowing")
+router.register("books", BookViewSet, basename="books")
 
 
 urlpatterns = [
     #    path('admin/', admin.site.urls),
-    path("api/", include("books_service.urls"))
+    path("api/", include(router.urls)),
 ] + debug_toolbar_urls()
