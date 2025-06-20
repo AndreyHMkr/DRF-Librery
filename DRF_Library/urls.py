@@ -31,5 +31,6 @@ router.register("books", BookViewSet, basename="books")
 
 urlpatterns = [
     #    path('admin/', admin.site.urls),
+    path("api/user/", include("user.urls", namespace="user")),
     path("api/", include(router.urls)),
 ] + debug_toolbar_urls()
