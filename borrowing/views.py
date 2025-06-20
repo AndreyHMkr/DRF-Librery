@@ -34,3 +34,23 @@ class BorrowingViewSet(viewsets.ModelViewSet):
         borrowing.save()
         return Response({"status": "book returned"})
 
+    def get_serializer_class(self):
+        if self.action == "list":
+            return BorrowingListSerializer
+        if self.action == "retrieve":
+            return BorrowingRetrieveSerializer
+        return BorrowingSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user = self.request.user
+        is_active = self.request.query_params.get("is_active")
+
+        if not user.is_staff:
+            queryset = queryset.filter(user=user)
+        if is_active is not None:
+            if is_active.lower() == "true":
+                queryset = queryset.filter(actual_return_date__isnull=True)
+            elif is_active.lower() == "false":
+                queryset = queryset.filter(actual_return_date__isnull=False)
+        return queryset.select_related("user", "book")
