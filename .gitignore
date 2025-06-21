@@ -2,3 +2,4 @@
 .idea
 **__pycach__
 db.sqlite3
+.env
