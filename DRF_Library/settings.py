@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "user",
     "books_service",
     "borrowing.apps.BorrowingConfig",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
+
+CELERY_BROKER_URL = "redis://localhost:6379/0"
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
