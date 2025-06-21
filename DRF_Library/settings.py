@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "user",
     "books_service",
     "borrowing.apps.BorrowingConfig",
+    "payments",
 ]
 
 MIDDLEWARE = [
