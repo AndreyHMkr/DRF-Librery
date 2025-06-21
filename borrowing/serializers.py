@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from books_service.models import Book
 from books_service.serializers import BookSerializer
 from borrowing.models import Borrowing
@@ -24,6 +23,18 @@ class BorrowingSerializer(serializers.ModelSerializer):
             "payments",
         )
         read_only_fields = ("id", "user")
+
+    def create(self, validated_data):
+        request = self.context["request"]
+        user = request.user
+        validated_data["user"] = user
+        borrowing = Borrowing.objects.create(**validated_data)
+        create_stripe_session(borrowing)
+        return borrowing
+
+    def get_session_url(self, obj):
+        latest_payment = obj.payments.order_by("-created_at").first()
+        return latest_payment.session_url if latest_payment else None
 
 
 class BorrowingListSerializer(serializers.ModelSerializer):
