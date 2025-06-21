@@ -3,3 +3,7 @@
 **__pycach__
 db.sqlite3
 .env
+celerybeat-schedule*
+celerybeat-schedule.dir
+celerybeat-schedule.dat
+celerybeat-schedule.bak
