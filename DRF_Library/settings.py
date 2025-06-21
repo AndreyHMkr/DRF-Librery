@@ -153,3 +153,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_SUCCESS_URL = "http://127.0.0.1:8000/success/"
+STRIPE_CANCEL_URL = "http://127.0.0.1:8000/cancel/"
