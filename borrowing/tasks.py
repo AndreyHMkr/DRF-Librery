@@ -1,6 +1,6 @@
 from celery import shared_task
 from django.utils.timezone import now
-from telegram_notifications.services import send_telegram_message
+from telegram_notifications.utils.telegram import send_telegram_message
 from borrowing.models import Borrowing
 
 
@@ -17,7 +17,7 @@ def check_overdue_borrowings():
 
     for borrowing in overdue_borrowings:
         message = (
-            f"📚 Overdue Borrowing Alert!\n\n"
+            f"❗ Overdue Borrowing Alert!\n\n"
             f"👤 User: {borrowing.user.email}\n"
             f"📖 Book: {borrowing.book.title}\n"
             f"📅 Expected Return: {borrowing.expected_return_date}\n"
