@@ -3,11 +3,14 @@ from rest_framework import serializers
 from books_service.models import Book
 from books_service.serializers import BookSerializer
 from borrowing.models import Borrowing
+from payments.serializers import PaymentSerializer
+from payments.utils import create_stripe_session
 from user.serializers import UserSerializer
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
+    payments = PaymentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Borrowing
@@ -18,6 +21,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
             "actual_return_date",
             "book",
             "user",
+            "payments",
         )
         read_only_fields = ("id", "user")
 
