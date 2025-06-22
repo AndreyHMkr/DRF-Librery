@@ -1,6 +1,7 @@
-from rest_framework import viewsets, generics
+import stripe
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from payments.models import Payment
+from DRF_Library import settings
 from payments.serializers import PaymentSerializer
 
 
@@ -28,3 +29,30 @@ class PaymentDetailView(generics.RetrieveAPIView):
         return Payment.objects.select_related("borrowing_id").filter(
             borrowing_id__user=user
         )
+
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from payments.models import Payment
+
+
+class PaymentSuccessView(APIView):
+    def get(self, request):
+        session_id = request.GET.get("session_id")
+
+        try:
+            payment = Payment.objects.get(session_id=session_id)
+            payment.status = Payment.Status.PAID
+            payment.save()
+        except Payment.DoesNotExist:
+            return Response({"error": "Invalid session ID"}, status=400)
+
+        return Response({"message": "Payment successful! ✅"})
+
+
+class PaymentCancelView(APIView):
+    def get(self, request):
+        return Response({"message": "Payment cancelled!"})
