@@ -20,7 +20,12 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from books_service.views import BookViewSet
 from borrowing.views import BorrowingViewSet
-from payments.views import PaymentListView, PaymentDetailView
+from payments.views import (
+    PaymentListView,
+    PaymentDetailView,
+    PaymentSuccessView,
+    PaymentCancelView,
+)
 
 router = DefaultRouter()
 router.register("borrowing", BorrowingViewSet, basename="borrowing")
@@ -31,5 +36,7 @@ urlpatterns = [
     path("api/user/", include("user.urls", namespace="user")),
     path("api/payments/", PaymentListView.as_view(), name="payment-list"),
     path("api/payments/<int:pk>/", PaymentDetailView.as_view(), name="payment-detail"),
+    path("success/", PaymentSuccessView.as_view(), name="payment-success"),
+    path("cancel/", PaymentCancelView.as_view(), name="payment-cancel"),
     path("api/", include(router.urls)),
 ] + debug_toolbar_urls()
