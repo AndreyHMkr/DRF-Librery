@@ -1,10 +1,21 @@
 import stripe
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from DRF_Library import settings
 from payments.serializers import PaymentSerializer
 
 
+@extend_schema(
+    parameters=[
+        OpenApiParameter(
+            name="status",
+            type=str,
+            location=OpenApiParameter.QUERY,
+            description="Filter by payment status. Available values: PENDING, PAID, FAILED.",
+        )
+    ]
+)
 class PaymentListView(generics.ListAPIView):
     serializer_class = PaymentSerializer
     permission_classes = [IsAuthenticated]
