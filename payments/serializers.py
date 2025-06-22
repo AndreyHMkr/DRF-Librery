@@ -16,3 +16,12 @@ class PaymentSerializer(serializers.ModelSerializer):
             "created_at",
         )
         read_only_fields = ("id", "created_at", "session_id", "session_url")
+
+
+class PaymentStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = (
+            "id",
+            "status",
+        )
