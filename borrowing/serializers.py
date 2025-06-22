@@ -29,7 +29,7 @@ class BorrowingSerializer(serializers.ModelSerializer):
         user = request.user
         validated_data["user"] = user
         borrowing = Borrowing.objects.create(**validated_data)
-        create_stripe_session(borrowing)
+        create_stripe_session(borrowing, request)
         return borrowing
 
     def get_session_url(self, obj):
