@@ -11,14 +11,15 @@ from borrowing.serializers import (
     BorrowingListSerializer,
     BorrowingRetrieveSerializer,
 )
-from user.permissions import IsAdminOrReadOnlyBorrowing
 
 
 class BorrowingViewSet(viewsets.ModelViewSet):
     queryset = Borrowing.objects.all()
     serializer_class = BorrowingSerializer
     authentication_classes = (JWTAuthentication,)
-    permission_classes = [IsAuthenticated, IsAdminOrReadOnlyBorrowing]
+    permission_classes = [
+        IsAuthenticated,
+    ]
 
     def perform_create(self, serializer):
         book = serializer.validated_data["book"]
