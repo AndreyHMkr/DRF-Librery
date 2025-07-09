@@ -1,0 +1,42 @@
+services:
+  library:
+    build:
+      context: .
+    env_file:
+      - .env
+    ports:
+      - "8001:8000"
+    volumes:
+      - library_practice:/app/uploads
+    command: >
+      sh -c "python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+
+  celery:
+    build:
+      context: .
+    command: celery -A DRF_Library beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - library
+      - redis
+  redis:
+    image: redis:7-alpine
+
+  worker:
+    build:
+      context: .
+    command: celery -A DRF_Library worker -l info --pool=solo
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - library
+      - redis
+
+volumes:
+  library_practice:
