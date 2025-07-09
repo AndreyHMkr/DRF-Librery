@@ -1,7 +1,8 @@
 .venv
 .idea
-**__pycach__
-db.sqlite3
+__pycache__/
+**/__pycache__/
+*.py[cod]db.sqlite3
 .env
 celerybeat-schedule*
 celerybeat-schedule.dir
